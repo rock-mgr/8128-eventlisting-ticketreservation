@@ -41,6 +41,11 @@ Use the password provided for your MariaDB environment. The filename above is th
 
 If you already created the tables using the earlier schema version from this project, run `migration_preserve_history.sql` once after confirming the previous schema is installed. It adds the snapshot fields and updates the foreign keys needed to retain cancelled reservations when an event is deleted. Do not run the migration on a fresh database; the current `schema.sql` already includes those changes.
 
+In Codespaces, start MariaDB if it is not running:
+
+```bash
+sudo service mariadb start
+
 ## Application setup
 
 1. Copy `.env.example` to `.env`.

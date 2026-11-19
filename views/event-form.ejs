@@ -1,33 +1,99 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title><%= title %> | EventEase</title><link rel="stylesheet" href="/css/style.css"></head>
-<body><nav class="site-nav"><a class="brand" href="/">EventEase</a><div class="nav-links"><a href="/">Public listing</a><a href="/admin/events">Manage events</a><a href="/admin/reservations">Reservations</a></div></nav>
-<main class="container page-content narrow"><a class="back-link" href="/admin/events">← Back to event management</a><section class="panel form-panel">
-  <p class="eyebrow">Organizer workspace</p><h1><%= title %></h1>
-  <% if (error) { %><div class="notice notice-error"><%= error %></div><% } %>
-  <form method="post" action="<%= action %>" class="stack-form">
-    <div class="form-grid">
-      <div class="form-field full-width"><label for="title">Event title</label><input id="title" name="title" maxlength="150" required value="<%= event.title || '' %>"></div>
-      <div class="form-field"><label for="category">Event type</label><input id="category" name="category" maxlength="60" required placeholder="Concert, workshop, festival..." value="<%= event.category || '' %>"></div>
-      <div class="form-field"><label for="organization_id">Organizer</label><select id="organization_id" name="organization_id" required><% organizations.forEach((organization) => { %><option value="<%= organization.organization_id %>" <%= String(event.organization_id || '') === String(organization.organization_id) ? 'selected' : '' %>><%= organization.organization_name %></option><% }); %></select></div>
-      <div class="form-field"><label for="start_datetime">Start date and time</label><input id="start_datetime" name="start_datetime" type="datetime-local" required value="<%= String(event.start_datetime || '').replace(' ', 'T').slice(0, 16) %>"></div>
-      <div class="form-field"><label for="end_datetime">End date and time</label><input id="end_datetime" name="end_datetime" type="datetime-local" required value="<%= String(event.end_datetime || '').replace(' ', 'T').slice(0, 16) %>"></div>
-      <div class="form-field"><label for="venue_name">Venue</label><input id="venue_name" name="venue_name" maxlength="150" required value="<%= event.venue_name || '' %>"></div>
-      <div class="form-field"><label for="venue_address">Venue address</label><input id="venue_address" name="venue_address" maxlength="255" required value="<%= event.venue_address || '' %>"></div>
-      <div class="form-field"><label for="capacity">Participant capacity</label><input id="capacity" name="capacity" type="number" min="1" step="1" required value="<%= event.capacity || '' %>"></div>
-      <div class="form-field"><label for="status">Publication status</label><select id="status" name="status"><option value="Draft" <%= event.status === 'Draft' ? 'selected' : '' %>>Draft (not listed)</option><option value="Published" <%= event.status === 'Published' ? 'selected' : '' %>>Published (visible to participants)</option></select></div>
-      <div class="form-field full-width"><label for="description">Event description</label><textarea id="description" name="description" rows="4"><%= event.description || '' %></textarea></div>
-    </div>
-    <div><div class="section-heading compact-heading"><div><p class="eyebrow">Ticket setup</p><h2>Ticket types and prices</h2></div></div><p class="muted">Enter a price of 0 for free admission. Add at least one ticket type.</p>
-      <div class="ticket-editor">
-      <% tickets.forEach((ticket, index) => { %>
-        <div class="ticket-editor-row">
-          <input type="hidden" name="tickets[<%= index %>][ticket_type_id]" value="<%= ticket.ticket_type_id || '' %>">
-          <div class="form-field"><label for="ticket-name-<%= index %>">Ticket name</label><input id="ticket-name-<%= index %>" name="tickets[<%= index %>][ticket_name]" maxlength="40" value="<%= ticket.ticket_name || '' %>" placeholder="Adult, Child, Senior, Free..." <%= index < 1 ? 'required' : '' %>></div>
-          <div class="form-field"><label for="ticket-price-<%= index %>">Price ($)</label><input id="ticket-price-<%= index %>" name="tickets[<%= index %>][price]" type="number" min="0" step="0.01" value="<%= ticket.price !== undefined ? ticket.price : '' %>" placeholder="0.00"></div>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= title %> | EventEase
+  </title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <nav class="site-nav"><a class="brand" href="/">EventEase</a>
+    <div class="nav-links"><a href="/">Public listing</a><a href="/admin/events">Manage events</a><a
+        href="/admin/reservations">Reservations</a></div>
+  </nav>
+  <main class="container page-content narrow"><a class="back-link" href="/admin/events">← Back to event management</a>
+    <section class="panel form-panel">
+      <p class="eyebrow">Organizer workspace</p>
+      <h1>
+        <%= title %>
+      </h1>
+      <% if (error) { %>
+        <div class="notice notice-error">
+          <%= error %>
         </div>
-      <% }); %>
-      </div>
-    </div>
-    <div class="form-actions"><button class="button" type="submit">Save event</button><a class="button button-secondary" href="/admin/events">Discard</a></div>
-  </form>
-</section></main><footer class="site-footer"><p>EventEase · Organizer event management</p></footer></body></html>
+        <% } %>
+          <form method="post" action="<%= action %>" class="stack-form">
+            <div class="form-grid">
+              <div class="form-field full-width"><label for="title">Event title</label><input id="title" name="title"
+                  maxlength="150" required value="<%= event.title || '' %>"></div>
+              <div class="form-field"><label for="category">Event type</label><input id="category" name="category"
+                  maxlength="60" required placeholder="Concert, workshop, festival..."
+                  value="<%= event.category || '' %>"></div>
+              <div class="form-field"><label for="organization_id">Organizer</label><select id="organization_id"
+                  name="organization_id" required>
+                  <% organizations.forEach((organization)=> { %><option value="<%= organization.organization_id %>"
+                      <%=String(event.organization_id || '' )===String(organization.organization_id) ? 'selected' : ''
+                      %>><%= organization.organization_name %>
+                    </option>
+                    <% }); %>
+                </select></div>
+              <div class="form-field"><label for="start_datetime">Start date and time</label><input id="start_datetime"
+                  name="start_datetime" type="datetime-local" required
+                  value="<%= String(event.start_datetime || '').replace(' ', 'T').slice(0, 16) %>"></div>
+              <div class="form-field"><label for="end_datetime">End date and time</label><input id="end_datetime"
+                  name="end_datetime" type="datetime-local" required
+                  value="<%= String(event.end_datetime || '').replace(' ', 'T').slice(0, 16) %>"></div>
+              <div class="form-field"><label for="venue_name">Venue</label><input id="venue_name" name="venue_name"
+                  maxlength="150" required value="<%= event.venue_name || '' %>"></div>
+              <div class="form-field"><label for="venue_address">Venue address</label><input id="venue_address"
+                  name="venue_address" maxlength="255" required value="<%= event.venue_address || '' %>"></div>
+              <div class="form-field"><label for="capacity">Participant capacity</label><input id="capacity"
+                  name="capacity" type="number" min="1" step="1" required value="<%= event.capacity || '' %>"></div>
+              <div class="form-field"><label for="status">Publication status</label><select id="status" name="status">
+                  <option value="Draft" <%=event.status==='Draft' ? 'selected' : '' %>>Draft (not listed)</option>
+                  <option value="Published" <%=event.status==='Published' ? 'selected' : '' %>>Published (visible to
+                    participants)</option>
+                </select></div>
+              <div class="form-field full-width"><label for="description">Event description</label><textarea
+                  id="description" name="description" rows="4"><%= event.description || '' %></textarea></div>
+            </div>
+            <div>
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Ticket setup</p>
+                  <h2>Ticket types and prices</h2>
+                </div>
+              </div>
+              <p class="muted">Enter a price of 0 for free admission. Add at least one ticket type.</p>
+              <div class="ticket-editor">
+                <% tickets.forEach((ticket, index)=> { %>
+                  <div class="ticket-editor-row">
+                    <input type="hidden" name="tickets[<%= index %>][ticket_type_id]"
+                      value="<%= ticket.ticket_type_id || '' %>">
+                    <div class="form-field"><label for="ticket-name-<%= index %>">Ticket name</label><input
+                        id="ticket-name-<%= index %>" name="tickets[<%= index %>][ticket_name]" maxlength="40"
+                        value="<%= ticket.ticket_name || '' %>" placeholder="Adult, Child, Senior, Free..." <%=index < 1
+                        ? 'required' : '' %>></div>
+                    <div class="form-field"><label for="ticket-price-<%= index %>">Price ($)</label><input
+                        id="ticket-price-<%= index %>" name="tickets[<%= index %>][price]" type="number" min="0"
+                        step="0.01" value="<%= ticket.price !== undefined ? ticket.price : '' %>" placeholder="0.00">
+                    </div>
+                  </div>
+                  <% }); %>
+              </div>
+            </div>
+            <div class="form-actions"><button class="button" type="submit">Save event</button><a
+                class="button button-secondary" href="/admin/events">Discard</a></div>
+          </form>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>EventEase · Organizer event management</p>
+  </footer>
+</body>
+
+</html>

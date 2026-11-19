@@ -1,10 +1,81 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Reservations | EventEase</title><link rel="stylesheet" href="/css/style.css"></head>
-<body><nav class="site-nav"><a class="brand" href="/">EventEase</a><div class="nav-links"><a href="/">Public listing</a><a href="/admin/events">Manage events</a><a class="active" href="/admin/reservations">Reservations</a></div></nav>
-<header class="page-banner"><div class="container"><p class="eyebrow">Organizer workspace</p><h1>Reservations</h1><p>Review confirmed bookings and manage participant records.</p></div></header>
-<main class="container page-content">
-  <% if (reservations.length === 0) { %><section class="panel empty-state"><h2>No reservations yet</h2><p>Participant reservations will appear here.</p></section><% } else { %>
-  <div class="panel table-wrap"><table><thead><tr><th>Confirmation</th><th>Participant</th><th>Event</th><th>Tickets</th><th>Total</th><th>Status</th><th>Action</th></tr></thead><tbody>
-    <% reservations.forEach((reservation) => { %><tr><td><strong><%= reservation.confirmation_code %></strong><span class="table-subtext"><%= new Date(reservation.reserved_at).toLocaleString("en-SG", { dateStyle: "medium", timeStyle: "short" }) %></span></td><td><%= reservation.attendee_name %><span class="table-subtext"><%= reservation.attendee_email %></span></td><td><%= reservation.event_title %></td><td><%= reservation.ticket_count %></td><td>$<%= Number(reservation.total_cost).toFixed(2) %></td><td><span class="status status-<%= reservation.status.toLowerCase() %>"><%= reservation.status %></span></td><td><a class="danger-link" href="/admin/reservations/<%= reservation.reservation_id %>/delete">Delete</a></td></tr><% }); %>
-  </tbody></table></div><% } %>
-</main><footer class="site-footer"><p>EventEase · Organizer reservation management</p></footer></body></html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservations | EventEase</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <nav class="site-nav"><a class="brand" href="/">EventEase</a>
+    <div class="nav-links"><a href="/">Public listing</a><a href="/admin/events">Manage events</a><a class="active"
+        href="/admin/reservations">Reservations</a></div>
+  </nav>
+  <header class="page-banner">
+    <div class="container">
+      <p class="eyebrow">Organizer workspace</p>
+      <h1>Reservations</h1>
+      <p>Review confirmed bookings and manage participant records.</p>
+    </div>
+  </header>
+  <main class="container page-content">
+    <% if (reservations.length===0) { %>
+      <section class="panel empty-state">
+        <h2>No reservations yet</h2>
+        <p>Participant reservations will appear here.</p>
+      </section>
+      <% } else { %>
+        <div class="panel table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Confirmation</th>
+                <th>Participant</th>
+                <th>Event</th>
+                <th>Tickets</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% reservations.forEach((reservation)=> { %><tr>
+                  <td><strong>
+                      <%= reservation.confirmation_code %>
+                    </strong><span class="table-subtext">
+                      <%= new Date(reservation.reserved_at).toLocaleString("en-SG", { dateStyle: "medium" ,
+                        timeStyle: "short" }) %>
+                    </span></td>
+                  <td>
+                    <%= reservation.attendee_name %><span class="table-subtext">
+                        <%= reservation.attendee_email %>
+                      </span>
+                  </td>
+                  <td>
+                    <%= reservation.event_title %>
+                  </td>
+                  <td>
+                    <%= reservation.ticket_count %>
+                  </td>
+                  <td>$<%= Number(reservation.total_cost).toFixed(2) %>
+                  </td>
+                  <td><span class="status status-<%= reservation.status.toLowerCase() %>">
+                      <%= reservation.status %>
+                    </span></td>
+                  <td><a class="danger-link"
+                      href="/admin/reservations/<%= reservation.reservation_id %>/delete">Delete</a></td>
+                </tr>
+                <% }); %>
+            </tbody>
+          </table>
+        </div>
+        <% } %>
+  </main>
+  <footer class="site-footer">
+    <p>EventEase · Organizer reservation management</p>
+  </footer>
+</body>
+
+</html>

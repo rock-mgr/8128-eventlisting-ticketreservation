@@ -1,15 +1,80 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Reservation confirmation | EventEase</title><link rel="stylesheet" href="/css/style.css"></head>
-<body><nav class="site-nav"><a class="brand" href="/">EventEase</a><div class="nav-links"><a href="/">Find events</a><a href="/admin/events">Organizer admin</a></div></nav>
-<main class="container page-content narrow"><section class="panel confirmation-panel">
-  <% if (reservation.status === "Confirmed") { %><div class="confirmation-icon">✓</div><p class="eyebrow">Reservation confirmed</p><h1>You're on the list, <%= reservation.attendee_name %>.</h1><% } else { %><p class="eyebrow">Reservation update</p><h1>This event reservation was cancelled.</h1><% } %>
-  <p class="muted">Keep this confirmation code for your records.</p>
-  <div class="confirmation-code"><span>Confirmation code</span><strong><%= reservation.confirmation_code %></strong></div>
-  <h2><%= reservation.event_title %></h2>
-  <% if (reservation.start_datetime) { %><p><%= new Date(reservation.start_datetime).toLocaleString("en-SG", { dateStyle: "full", timeStyle: "short" }) %></p><p><%= reservation.venue_name %> · <%= reservation.venue_address %></p><% } %>
-  <div class="table-wrap"><table><thead><tr><th>Ticket</th><th>Qty</th><th>Unit price</th><th>Subtotal</th></tr></thead><tbody>
-    <% items.forEach((item) => { %><tr><td><%= item.ticket_name %></td><td><%= item.quantity %></td><td><%= Number(item.unit_price) === 0 ? "Free" : "$" + Number(item.unit_price).toFixed(2) %></td><td>$<%= (Number(item.unit_price) * Number(item.quantity)).toFixed(2) %></td></tr><% }); %>
-  </tbody></table></div>
-  <p><strong>Participant:</strong> <%= reservation.attendee_name %> · <%= reservation.attendee_email %></p>
-  <a class="button" href="/">Browse more events</a>
-</section></main><footer class="site-footer"><p>EventEase · Event discovery and ticket reservations</p></footer></body></html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservation confirmation | EventEase</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <nav class="site-nav"><a class="brand" href="/">EventEase</a>
+    <div class="nav-links"><a href="/">Find events</a><a href="/admin/events">Organizer admin</a></div>
+  </nav>
+  <main class="container page-content narrow">
+    <section class="panel confirmation-panel">
+      <% if (reservation.status==="Confirmed" ) { %>
+        <div class="confirmation-icon">✓</div>
+        <p class="eyebrow">Reservation confirmed</p>
+        <h1>You're on the list, <%= reservation.attendee_name %>.</h1>
+        <% } else { %>
+          <p class="eyebrow">Reservation update</p>
+          <h1>This event reservation was cancelled.</h1>
+          <% } %>
+            <p class="muted">Keep this confirmation code for your records.</p>
+            <div class="confirmation-code"><span>Confirmation code</span><strong>
+                <%= reservation.confirmation_code %>
+              </strong></div>
+            <h2>
+              <%= reservation.event_title %>
+            </h2>
+            <% if (reservation.start_datetime) { %>
+              <p>
+                <%= new Date(reservation.start_datetime).toLocaleString("en-SG", { dateStyle: "full" ,
+                  timeStyle: "short" }) %>
+              </p>
+              <p>
+                <%= reservation.venue_name %> · <%= reservation.venue_address %>
+              </p>
+              <% } %>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Ticket</th>
+                        <th>Qty</th>
+                        <th>Unit price</th>
+                        <th>Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% items.forEach((item)=> { %><tr>
+                          <td>
+                            <%= item.ticket_name %>
+                          </td>
+                          <td>
+                            <%= item.quantity %>
+                          </td>
+                          <td>
+                            <%= Number(item.unit_price)===0 ? "Free" : "$" + Number(item.unit_price).toFixed(2) %>
+                          </td>
+                          <td>$<%= (Number(item.unit_price) * Number(item.quantity)).toFixed(2) %>
+                          </td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+                <p><strong>Participant:</strong>
+                  <%= reservation.attendee_name %> · <%= reservation.attendee_email %>
+                </p>
+                <a class="button" href="/">Browse more events</a>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>EventEase · Event discovery and ticket reservations</p>
+  </footer>
+</body>
+
+</html>
