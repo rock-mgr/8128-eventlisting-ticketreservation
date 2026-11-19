@@ -177,7 +177,7 @@ app.post("/events/:id/reservations", asyncRoute(async (req, res) => {
   const attendeeEmail = String(req.body.attendee_email || "").trim();
   const quantities = req.body.quantities && typeof req.body.quantities === "object" ? req.body.quantities : {};
   const requested = Object.entries(quantities)
-    .map(([id, quantity]) => ({ ticketTypeId: toId(id), quantity: Number(quantity) }))
+    .map(([id, quantity]) => ({ ticketTypeId: toId(id.replace("ticket_", "")), quantity: Number(quantity) }))
     .filter((item) => item.ticketTypeId && Number.isInteger(item.quantity) && item.quantity > 0);
 
   const [eventRows] = await db.execute(`

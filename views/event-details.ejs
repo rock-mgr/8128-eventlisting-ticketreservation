@@ -27,7 +27,7 @@
               <div class="ticket-row">
                 <div><strong><%= ticket.ticket_name %></strong><span><%= Number(ticket.price) === 0 ? "Free" : "$" + Number(ticket.price).toFixed(2) %> per ticket</span></div>
                 <label class="quantity-label" for="quantity-<%= ticket.ticket_type_id %>">Quantity
-                  <input id="quantity-<%= ticket.ticket_type_id %>" type="number" min="0" max="<%= event.spaces_left %>" step="1" name="quantities[<%= ticket.ticket_type_id %>]" value="<%= formData.quantities && formData.quantities[ticket.ticket_type_id] !== undefined ? formData.quantities[ticket.ticket_type_id] : 0 %>">
+                  <input id="quantity-<%= ticket.ticket_type_id %>" type="number" min="0" max="<%= event.spaces_left %>" step="1" name="quantities[ticket_<%= ticket.ticket_type_id %>]" value="<%= formData.quantities && formData.quantities[ticket.ticket_type_id] !== undefined ? formData.quantities[ticket.ticket_type_id] : 0 %>">
                 </label>
               </div>
             <% }); %>
