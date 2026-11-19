@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Delete event | EventEase</title><link rel="stylesheet" href="/css/style.css"></head>
+<body><nav class="site-nav"><a class="brand" href="/">EventEase</a><div class="nav-links"><a href="/admin/events">Manage events</a><a href="/admin/reservations">Reservations</a></div></nav>
+<main class="container page-content narrow"><section class="panel confirm-delete">
+  <p class="eyebrow">Event removal</p><h1>Delete this event?</h1>
+  <p><strong><%= event.title %></strong> has <strong><%= event.reservation_count %></strong> reservation(s).</p>
+  <div class="notice">Deleting the event will cancel its confirmed reservations. Reservation records and ticket details will remain in the organizer history.</div>
+  <form method="post" action="/admin/events/<%= event.event_id %>/delete" class="form-actions"><button class="button button-danger" type="submit">Delete event and cancel reservations</button><a class="button button-secondary" href="/admin/events">Keep event</a></form>
+</section></main><footer class="site-footer"><p>EventEase · Organizer event management</p></footer></body></html>

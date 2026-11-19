@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title><%= event.title %> | EventEase</title><link rel="stylesheet" href="/css/style.css"></head>
+<body>
+  <nav class="site-nav"><a class="brand" href="/">EventEase</a><div class="nav-links"><a href="/">Find events</a><a href="/admin/events">Organizer admin</a></div></nav>
+  <main class="container page-content">
+    <a class="back-link" href="/">← Back to events</a>
+    <section class="panel detail-panel">
+      <div class="event-card-top"><span class="tag"><%= event.category %></span><span class="availability"><%= event.spaces_left %> spaces left</span></div>
+      <h1><%= event.title %></h1>
+      <p class="lead"><%= event.description || "Join us for this upcoming event." %></p>
+      <div class="detail-grid">
+        <div><span class="detail-label">Date and time</span><strong><%= new Date(event.start_datetime).toLocaleString("en-SG", { dateStyle: "full", timeStyle: "short" }) %></strong></div>
+        <div><span class="detail-label">Venue</span><strong><%= event.venue_name %></strong><span><%= event.venue_address %></span></div>
+        <div><span class="detail-label">Organizer</span><strong><%= event.organization_name %></strong></div>
+        <div><span class="detail-label">Capacity</span><strong><%= event.capacity %> participants</strong></div>
+      </div>
+    </section>
+    <section class="panel reservation-panel">
+      <div class="section-heading"><div><p class="eyebrow">Reserve ahead</p><h2>Choose your tickets</h2></div><p>Confirmation only · no online payment</p></div>
+      <% if (error) { %><div class="notice notice-error"><%= error %></div><% } %>
+      <% if (event.spaces_left < 1) { %>
+        <div class="notice">This event has reached capacity. Please check back if spaces become available.</div>
+      <% } else { %>
+        <form method="post" action="/events/<%= event.event_id %>/reservations" class="stack-form">
+          <div class="ticket-list">
+            <% ticketTypes.forEach((ticket) => { %>
+              <div class="ticket-row">
+                <div><strong><%= ticket.ticket_name %></strong><span><%= Number(ticket.price) === 0 ? "Free" : "$" + Number(ticket.price).toFixed(2) %> per ticket</span></div>
+                <label class="quantity-label" for="quantity-<%= ticket.ticket_type_id %>">Quantity
+                  <input id="quantity-<%= ticket.ticket_type_id %>" type="number" min="0" max="<%= event.spaces_left %>" step="1" name="quantities[<%= ticket.ticket_type_id %>]" value="<%= formData.quantities && formData.quantities[ticket.ticket_type_id] !== undefined ? formData.quantities[ticket.ticket_type_id] : 0 %>">
+                </label>
+              </div>
+            <% }); %>
+          </div>
+          <div class="form-grid">
+            <div class="form-field"><label for="attendee_name">Participant name</label><input id="attendee_name" name="attendee_name" maxlength="100" required value="<%= formData.attendeeName || '' %>"></div>
+            <div class="form-field"><label for="attendee_email">Email address</label><input id="attendee_email" name="attendee_email" type="email" maxlength="255" required value="<%= formData.attendeeEmail || '' %>"></div>
+          </div>
+          <p class="muted">Your reservation is confirmed immediately. Payment is handled separately by the organizer.</p>
+          <button class="button" type="submit">Confirm reservation</button>
+        </form>
+      <% } %>
+    </section>
+  </main>
+  <footer class="site-footer"><p>EventEase · Event discovery and ticket reservations</p></footer>
+</body></html>

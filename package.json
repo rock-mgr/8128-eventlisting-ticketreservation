@@ -1,12 +1,12 @@
 {
   "name": "8128-eventlisting-ticketreservation",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Event listing and ticket reservation platform built with Express, EJS and MariaDB",
+  "main": "server.js",
   "scripts": {
-  "start": "node server.js",
-  "dev": "nodemon server.js"
-},
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rock-mgr/8128-eventlisting-ticketreservation.git"

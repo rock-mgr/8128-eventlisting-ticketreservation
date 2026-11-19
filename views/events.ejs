@@ -3,63 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Find an Event</title>
+  <title>Find an Event | EventEase</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <header>
-    <h1>Find an Event</h1>
-    <p>Browse events and reserve your tickets ahead of time.</p>
+  <nav class="site-nav">
+    <a class="brand" href="/">EventEase</a>
+    <div class="nav-links"><a href="/">Find events</a><a href="/admin/events">Organizer admin</a></div>
+  </nav>
+  <header class="hero">
+    <div class="container">
+      <p class="eyebrow">Discover something happening</p>
+      <h1>Find an event</h1>
+      <p>Browse events and reserve your tickets ahead of time.</p>
+    </div>
   </header>
-
-  <main>
-    <form action="/" method="get">
-      <div class="form-field">
-        <label for="category">Event type</label>
-        <select id="category" name="category">
-          <option value="">All event types</option>
-          <% categories.forEach((item) => { %>
-            <option
-              value="<%= item.category %>"
-              <%= filters.category === item.category ? "selected" : "" %>>
-              <%= item.category %>
-            </option>
-          <% }); %>
-        </select>
-      </div>
-
-      <div class="form-field">
-        <label for="eventDate">Event date</label>
-        <input
-          id="eventDate"
-          name="eventDate"
-          type="date"
-          value="<%= filters.eventDate %>">
-      </div>
-
-      <button type="submit">Search</button>
-    </form>
+  <main class="container page-content">
+    <section class="panel search-panel" aria-label="Search events">
+      <form action="/" method="get" class="search-form">
+        <div class="form-field">
+          <label for="category">Event type</label>
+          <select id="category" name="category">
+            <option value="">All event types</option>
+            <% categories.forEach((item) => { %>
+              <option value="<%= item.category %>" <%= filters.category === item.category ? "selected" : "" %>><%= item.category %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="eventDate">Event date</label>
+          <input id="eventDate" name="eventDate" type="date" value="<%= filters.eventDate %>">
+        </div>
+        <button class="button" type="submit">Search events</button>
+      </form>
+    </section>
 
     <% if (error) { %>
-      <p class="error-message"><%= error %></p>
+      <div class="notice notice-error"><%= error %></div>
     <% } else if (events.length === 0) { %>
-      <p>No events found. Try changing your search.</p>
+      <section class="panel empty-state">
+        <h2>No events found</h2>
+        <p>Try changing your search, or check back for new events.</p>
+      </section>
     <% } else { %>
-      <section class="event-list">
+      <section class="section-heading">
+        <div><p class="eyebrow">What's on</p><h2>Upcoming events</h2></div>
+        <p><%= events.length %> event<%= events.length === 1 ? "" : "s" %></p>
+      </section>
+      <section class="event-grid">
         <% events.forEach((event) => { %>
           <article class="event-card">
-            <p><%= event.category %></p>
-            <h2><%= event.title %></h2>
-            <p><%= event.start_datetime %></p>
-            <p><%= event.venue_name %></p>
-            <p>
-              From $<%= Number(event.starting_price).toFixed(2) %>
-            </p>
-            <a href="/events/<%= event.event_id %>">View event details</a>
+            <div class="event-card-top"><span class="tag"><%= event.category %></span><span class="availability"><%= event.spaces_left %> spaces left</span></div>
+            <h3><%= event.title %></h3>
+            <p class="event-description"><%= event.description || "Join us for this upcoming event." %></p>
+            <dl class="event-meta">
+              <div><dt>Date</dt><dd><%= new Date(event.start_datetime).toLocaleString("en-SG", { dateStyle: "medium", timeStyle: "short" }) %></dd></div>
+              <div><dt>Venue</dt><dd><%= event.venue_name %></dd></div>
+            </dl>
+            <div class="card-footer"><span class="price">From $<%= Number(event.starting_price).toFixed(2) %></span><a class="button button-small" href="/events/<%= event.event_id %>">View details</a></div>
           </article>
         <% }); %>
       </section>
     <% } %>
   </main>
+  <footer class="site-footer"><p>EventEase · Event discovery and ticket reservations</p></footer>
 </body>
 </html>

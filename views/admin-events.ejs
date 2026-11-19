@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Manage events | EventEase</title><link rel="stylesheet" href="/css/style.css"></head>
+<body><nav class="site-nav"><a class="brand" href="/">EventEase</a><div class="nav-links"><a href="/">Public listing</a><a class="active" href="/admin/events">Manage events</a><a href="/admin/reservations">Reservations</a></div></nav>
+<header class="page-banner"><div class="container"><p class="eyebrow">Organizer workspace</p><h1>Manage events</h1><p>Create and maintain event details, capacity and ticket prices.</p></div></header>
+<main class="container page-content">
+  <div class="toolbar"><div><p class="muted">Events configured for your organization</p></div><a class="button" href="/admin/events/new">＋ Create event</a></div>
+  <% if (events.length === 0) { %><section class="panel empty-state"><h2>No events yet</h2><p>Create an event to publish it to the public listing.</p></section><% } else { %>
+  <div class="panel table-wrap"><table><thead><tr><th>Event</th><th>Category</th><th>Date</th><th>Capacity</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+    <% events.forEach((event) => { %><tr>
+      <td><strong><%= event.title %></strong><span class="table-subtext"><%= event.organization_name %> · <%= event.venue_name %></span></td>
+      <td><%= event.category %></td><td><%= new Date(event.start_datetime).toLocaleString("en-SG", { dateStyle: "medium", timeStyle: "short" }) %></td>
+      <td><%= event.reserved_count %> / <%= event.capacity %></td>
+      <td><span class="status status-<%= event.status.toLowerCase() %>"><%= event.status %></span></td>
+      <td><div class="action-links"><a href="/admin/events/<%= event.event_id %>/edit">Edit</a><a href="/admin/events/<%= event.event_id %>/delete" class="danger-link">Delete</a></div></td>
+    </tr><% }); %>
+  </tbody></table></div><% } %>
+</main><footer class="site-footer"><p>EventEase · Organizer event management</p></footer></body></html>
