@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find an Event</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Find an Event</h1>
+    <p>Browse events and reserve your tickets ahead of time.</p>
+  </header>
+
+  <main>
+    <form action="/" method="get">
+      <div class="form-field">
+        <label for="category">Event type</label>
+        <select id="category" name="category">
+          <option value="">All event types</option>
+          <% categories.forEach((item) => { %>
+            <option
+              value="<%= item.category %>"
+              <%= filters.category === item.category ? "selected" : "" %>>
+              <%= item.category %>
+            </option>
+          <% }); %>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="eventDate">Event date</label>
+        <input
+          id="eventDate"
+          name="eventDate"
+          type="date"
+          value="<%= filters.eventDate %>">
+      </div>
+
+      <button type="submit">Search</button>
+    </form>
+
+    <% if (error) { %>
+      <p class="error-message"><%= error %></p>
+    <% } else if (events.length === 0) { %>
+      <p>No events found. Try changing your search.</p>
+    <% } else { %>
+      <section class="event-list">
+        <% events.forEach((event) => { %>
+          <article class="event-card">
+            <p><%= event.category %></p>
+            <h2><%= event.title %></h2>
+            <p><%= event.start_datetime %></p>
+            <p><%= event.venue_name %></p>
+            <p>
+              From $<%= Number(event.starting_price).toFixed(2) %>
+            </p>
+            <a href="/events/<%= event.event_id %>">View event details</a>
+          </article>
+        <% }); %>
+      </section>
+    <% } %>
+  </main>
+</body>
+</html>
